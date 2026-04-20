@@ -1,0 +1,37 @@
+/* AW Client Portal — Common Styles */
+
+/* Flash message auto-dismiss */
+.flash-msg {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Smooth transitions */
+a, button {
+    transition: all 0.15s ease;
+}
+
+/* Focus styles */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Tab underline animation */
+.tab-btn {
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Table row hover */
+tbody tr {
+    transition: background-color 0.1s ease;
+}
+
+/* Loader backdrop */
+#loader {
+    backdrop-filter: blur(2px);
+}

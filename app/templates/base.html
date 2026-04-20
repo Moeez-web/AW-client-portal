@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AW Client Portal{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a5f',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+    <!-- Loader overlay -->
+    <div id="loader" style="display:none" class="fixed inset-0 bg-white bg-opacity-80 z-50 flex items-center justify-center">
+        <div class="flex flex-col items-center gap-3">
+            <div class="w-10 h-10 border-4 border-brand-600 border-t-transparent rounded-full animate-spin"></div>
+            <span class="text-brand-900 font-medium">Processing...</span>
+        </div>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div id="flash-messages" class="fixed top-4 right-4 z-40 flex flex-col gap-2 max-w-sm">
+        {% for category, message in messages %}
+        <div class="flash-msg px-4 py-3 rounded-lg shadow-lg flex items-center gap-2
+            {% if category == 'success' %}bg-green-100 text-green-800 border border-green-300
+            {% elif category == 'error' %}bg-red-100 text-red-800 border border-red-300
+            {% else %}bg-blue-100 text-blue-800 border border-blue-300{% endif %}">
+            <span class="flex-1">{{ message }}</span>
+            <button onclick="this.parentElement.remove()" class="text-current opacity-50 hover:opacity-100">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% block body %}{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
