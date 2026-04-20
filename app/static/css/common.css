@@ -35,3 +35,31 @@ tbody tr {
 #loader {
     backdrop-filter: blur(2px);
 }
+
+/* Mobile nav slide */
+.mobile-nav {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+}
+.mobile-nav.open {
+    max-height: 200px;
+}
+
+/* Touch-friendly targets */
+@media (max-width: 640px) {
+    .touch-target {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* Tab scroll */
+.tab-scroll {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.tab-scroll::-webkit-scrollbar {
+    display: none;
+}

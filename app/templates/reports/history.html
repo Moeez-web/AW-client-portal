@@ -3,42 +3,42 @@
 
 {% block body %}
 <div class="min-h-screen bg-gray-50">
-    <nav class="bg-brand-900 text-white px-6 py-4 flex items-center justify-between shadow">
-        <a href="{{ url_for('clients.client_list') }}" class="text-xl font-bold tracking-tight">AW Client Portal</a>
-        <div class="flex items-center gap-4">
-            <span class="text-brand-300 text-sm">{{ client.case_name }}</span>
-            <a href="{{ url_for('clients.edit_client', client_id=client.id) }}" class="text-brand-300 hover:text-white text-sm transition">Edit Client</a>
-            <a href="{{ url_for('reports.new_report', client_id=client.id) }}" class="text-brand-300 hover:text-white text-sm transition">New Report</a>
+    <nav class="bg-brand-900 text-white px-4 md:px-6 py-4 flex items-center justify-between shadow">
+        <a href="{{ url_for('clients.client_list') }}" class="text-lg md:text-xl font-bold tracking-tight">AW Client Portal</a>
+        <div class="flex items-center gap-3 md:gap-4">
+            <span class="text-brand-300 text-xs md:text-sm hidden sm:inline">{{ client.case_name }}</span>
+            <a href="{{ url_for('clients.edit_client', client_id=client.id) }}" class="text-brand-300 hover:text-white text-xs md:text-sm transition">Edit</a>
+            <a href="{{ url_for('reports.new_report', client_id=client.id) }}" class="text-brand-300 hover:text-white text-xs md:text-sm transition">New Report</a>
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto px-6 py-8">
-        <h1 class="text-2xl font-bold text-gray-900 mb-2">Report History</h1>
+    <div class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-8">
+        <h1 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Report History</h1>
         <p class="text-gray-500 text-sm mb-6">{{ client.case_name }} — All quarterly reports</p>
 
         <div class="space-y-3">
             {% if reports %}
             {% for report in reports %}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex items-center justify-between hover:shadow-md transition">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:shadow-md transition">
                 <div>
                     <h3 class="font-semibold text-gray-900 text-lg">{{ report.quarter_label }}</h3>
                     <p class="text-sm text-gray-500 mt-1">Generated: {{ report.generated_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
                     <p class="text-sm text-gray-400">{{ report.entries | length }} entries</p>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 flex-wrap">
                     <a href="{{ url_for('reports.view_report', client_id=client.id, report_id=report.id) }}"
-                       class="px-4 py-2 text-sm font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100 transition">
+                       class="flex-1 sm:flex-none text-center px-4 py-2 text-sm font-medium text-brand-600 bg-brand-50 rounded-lg hover:bg-brand-100 transition">
                         View
                     </a>
                     {% if report.pdf_sacs_path %}
                     <a href="{{ url_for('reports.download_sacs', client_id=client.id, report_id=report.id) }}"
-                       class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                       class="flex-1 sm:flex-none text-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
                         SACS PDF
                     </a>
                     {% endif %}
                     {% if report.pdf_tcc_path %}
                     <a href="{{ url_for('reports.download_tcc', client_id=client.id, report_id=report.id) }}"
-                       class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                       class="flex-1 sm:flex-none text-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
                         TCC PDF
                     </a>
                     {% endif %}

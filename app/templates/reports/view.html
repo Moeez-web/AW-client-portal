@@ -3,22 +3,22 @@
 
 {% block body %}
 <div class="min-h-screen bg-gray-50">
-    <nav class="bg-brand-900 text-white px-6 py-4 flex items-center justify-between shadow">
-        <a href="{{ url_for('clients.client_list') }}" class="text-xl font-bold tracking-tight">AW Client Portal</a>
-        <div class="flex items-center gap-4">
-            <span class="text-brand-300 text-sm">{{ client.case_name }}</span>
-            <a href="{{ url_for('reports.report_history', client_id=client.id) }}" class="text-brand-300 hover:text-white text-sm transition">History</a>
+    <nav class="bg-brand-900 text-white px-4 md:px-6 py-4 flex items-center justify-between shadow">
+        <a href="{{ url_for('clients.client_list') }}" class="text-lg md:text-xl font-bold tracking-tight">AW Client Portal</a>
+        <div class="flex items-center gap-3 md:gap-4">
+            <span class="text-brand-300 text-xs md:text-sm hidden sm:inline">{{ client.case_name }}</span>
+            <a href="{{ url_for('reports.report_history', client_id=client.id) }}" class="text-brand-300 hover:text-white text-xs md:text-sm transition">History</a>
         </div>
     </nav>
 
-    <div class="max-w-5xl mx-auto px-6 py-8">
+    <div class="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">{{ report.quarter_label }}</h1>
+                <h1 class="text-xl md:text-2xl font-bold text-gray-900">{{ report.quarter_label }}</h1>
                 <p class="text-gray-500 text-sm mt-1">{{ client.case_name }} — {{ report.generated_at.strftime('%B %d, %Y') }}</p>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
                 <a href="{{ url_for('reports.download_sacs', client_id=client.id, report_id=report.id) }}"
                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium shadow">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -33,14 +33,14 @@
         </div>
 
         <!-- Two column: SACS + TCC -->
-        <div class="grid grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
 
             <!-- SACS Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="bg-green-50 px-5 py-3 border-b border-green-100">
+                <div class="bg-green-50 px-4 md:px-5 py-3 border-b border-green-100">
                     <h2 class="text-sm font-bold text-green-800 uppercase tracking-wide">SACS — Monthly Cashflow</h2>
                 </div>
-                <div class="p-5 space-y-3">
+                <div class="p-4 md:p-5 space-y-3">
                     <div class="flex justify-between">
                         <span class="text-gray-600">Monthly Inflow</span>
                         <span class="font-semibold">${{ "%.0f"|format(report_data.sacs.inflow) }}</span>
@@ -74,10 +74,10 @@
 
             <!-- TCC Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="bg-blue-50 px-5 py-3 border-b border-blue-100">
+                <div class="bg-blue-50 px-4 md:px-5 py-3 border-b border-blue-100">
                     <h2 class="text-sm font-bold text-blue-800 uppercase tracking-wide">TCC — Net Worth</h2>
                 </div>
-                <div class="p-5 space-y-3">
+                <div class="p-4 md:p-5 space-y-3">
                     {% if report_data.primary %}
                     <div class="flex justify-between">
                         <span class="text-gray-600">{{ report_data.primary.full_name }} Retirement</span>
@@ -113,32 +113,34 @@
         </div>
 
         <!-- Account Details by Group -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 mb-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Account Details</h2>
 
             {% macro account_table(title, accounts_list) %}
             {% if accounts_list %}
             <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2 mt-4 first:mt-0">{{ title }}</h3>
-            <table class="w-full text-sm mb-3">
-                <thead>
-                    <tr class="text-left text-gray-400 border-b border-gray-100">
-                        <th class="pb-1.5 font-medium">Account</th>
-                        <th class="pb-1.5 font-medium">Owner</th>
-                        <th class="pb-1.5 font-medium">Institution</th>
-                        <th class="pb-1.5 font-medium text-right">Balance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for acc in accounts_list %}
-                    <tr class="border-b border-gray-50">
-                        <td class="py-1.5">{{ acc.sub_type }} {% if acc.account_number_last4 %}<span class="text-gray-400">****{{ acc.account_number_last4 }}</span>{% endif %}</td>
-                        <td class="py-1.5 text-gray-500">{{ acc.owner | capitalize }}</td>
-                        <td class="py-1.5 text-gray-500">{{ acc.institution_name or '—' }}</td>
-                        <td class="py-1.5 text-right font-semibold">${{ "%.0f"|format(entries_by_account.get(acc.id, 0)) }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="overflow-x-auto -mx-4 md:mx-0">
+                <table class="w-full text-sm mb-3 min-w-[420px] md:min-w-0">
+                    <thead>
+                        <tr class="text-left text-gray-400 border-b border-gray-100">
+                            <th class="pb-1.5 font-medium pl-4 md:pl-0">Account</th>
+                            <th class="pb-1.5 font-medium">Owner</th>
+                            <th class="pb-1.5 font-medium">Institution</th>
+                            <th class="pb-1.5 font-medium text-right pr-4 md:pr-0">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for acc in accounts_list %}
+                        <tr class="border-b border-gray-50">
+                            <td class="py-1.5 pl-4 md:pl-0">{{ acc.sub_type }} {% if acc.account_number_last4 %}<span class="text-gray-400">****{{ acc.account_number_last4 }}</span>{% endif %}</td>
+                            <td class="py-1.5 text-gray-500">{{ acc.owner | capitalize }}</td>
+                            <td class="py-1.5 text-gray-500">{{ acc.institution_name or '—' }}</td>
+                            <td class="py-1.5 text-right font-semibold pr-4 md:pr-0">${{ "%.0f"|format(entries_by_account.get(acc.id, 0)) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% endif %}
             {% endmacro %}
 
@@ -153,44 +155,46 @@
 
             {% if report_data.liabilities %}
             <h3 class="text-sm font-semibold text-red-500 uppercase mb-2 mt-4">Liabilities</h3>
-            <table class="w-full text-sm">
-                <thead>
-                    <tr class="text-left text-gray-400 border-b border-gray-100">
-                        <th class="pb-1.5 font-medium">Type</th>
-                        <th class="pb-1.5 font-medium">Description</th>
-                        <th class="pb-1.5 font-medium">Rate</th>
-                        <th class="pb-1.5 font-medium text-right">Balance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for liab in report_data.liabilities %}
-                    <tr class="border-b border-gray-50">
-                        <td class="py-1.5">{{ liab.liability_type }}</td>
-                        <td class="py-1.5 text-gray-500">{{ liab.description or '—' }}</td>
-                        <td class="py-1.5 text-gray-500">{% if liab.interest_rate %}{{ liab.interest_rate }}%{% else %}—{% endif %}</td>
-                        <td class="py-1.5 text-right font-semibold text-red-600">${{ "%.0f"|format(tcc_totals.liabilities_total) if loop.last and report_data.liabilities | length == 1 else liab.balance }}</td>
-                    </tr>
-                    {% endfor %}
-                    {% if report_data.liabilities | length > 1 %}
-                    <tr class="border-t border-gray-200">
-                        <td colspan="3" class="py-1.5 font-medium">Total Liabilities</td>
-                        <td class="py-1.5 text-right font-semibold text-red-600">${{ "%.0f"|format(tcc_totals.liabilities_total) }}</td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+            <div class="overflow-x-auto -mx-4 md:mx-0">
+                <table class="w-full text-sm min-w-[380px] md:min-w-0">
+                    <thead>
+                        <tr class="text-left text-gray-400 border-b border-gray-100">
+                            <th class="pb-1.5 font-medium pl-4 md:pl-0">Type</th>
+                            <th class="pb-1.5 font-medium">Description</th>
+                            <th class="pb-1.5 font-medium">Rate</th>
+                            <th class="pb-1.5 font-medium text-right pr-4 md:pr-0">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for liab in report_data.liabilities %}
+                        <tr class="border-b border-gray-50">
+                            <td class="py-1.5 pl-4 md:pl-0">{{ liab.liability_type }}</td>
+                            <td class="py-1.5 text-gray-500">{{ liab.description or '—' }}</td>
+                            <td class="py-1.5 text-gray-500">{% if liab.interest_rate %}{{ liab.interest_rate }}%{% else %}—{% endif %}</td>
+                            <td class="py-1.5 text-right font-semibold text-red-600 pr-4 md:pr-0">${{ "%.0f"|format(tcc_totals.liabilities_total) if loop.last and report_data.liabilities | length == 1 else liab.balance }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if report_data.liabilities | length > 1 %}
+                        <tr class="border-t border-gray-200">
+                            <td colspan="3" class="py-1.5 font-medium">Total Liabilities</td>
+                            <td class="py-1.5 text-right font-semibold text-red-600">${{ "%.0f"|format(tcc_totals.liabilities_total) }}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
             {% endif %}
         </div>
 
         <!-- Quarterly Update -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-2">Update Balances</h2>
             <p class="text-sm text-gray-500 mb-4">Adjust account balances for this quarter.</p>
             <form method="POST" action="{{ url_for('reports.update_report', client_id=client.id, report_id=report.id) }}">
-                <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 md:gap-x-6 gap-y-3">
                     {% for acc in report_data.accounts %}
-                    <div class="flex items-center gap-3 py-1.5">
-                        <span class="text-sm text-gray-600 w-44">{{ acc.sub_type }} <span class="text-gray-400">({{ acc.owner | capitalize }})</span></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                        <span class="text-sm text-gray-600 sm:w-36 md:w-44 flex-shrink-0">{{ acc.sub_type }} <span class="text-gray-400">({{ acc.owner | capitalize }})</span></span>
                         <div class="relative flex-1">
                             <span class="absolute left-2.5 top-1.5 text-gray-400 text-xs">$</span>
                             <input type="number" name="balance_{{ acc.id }}" step="0.01" min="0"
@@ -201,7 +205,7 @@
                     {% endfor %}
                 </div>
                 <div class="flex justify-end mt-4">
-                    <button type="submit" class="px-5 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition text-sm font-medium">
+                    <button type="submit" class="w-full sm:w-auto px-5 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition text-sm font-medium">
                         Update Balances
                     </button>
                 </div>

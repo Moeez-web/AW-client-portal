@@ -4,30 +4,30 @@
 {% block body %}
 <div class="min-h-screen bg-gray-50">
     <!-- Nav -->
-    <nav class="bg-brand-900 text-white px-6 py-4 flex items-center justify-between shadow">
-        <a href="{{ url_for('clients.client_list') }}" class="text-xl font-bold tracking-tight">AW Client Portal</a>
+    <nav class="bg-brand-900 text-white px-4 md:px-6 py-4 flex items-center justify-between shadow">
+        <a href="{{ url_for('clients.client_list') }}" class="text-lg md:text-xl font-bold tracking-tight">AW Client Portal</a>
         <a href="{{ url_for('clients.client_list') }}" class="text-brand-300 hover:text-white text-sm transition">Back to Clients</a>
     </nav>
 
-    <div class="max-w-4xl mx-auto px-6 py-8">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">
+    <div class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-8">
+        <h1 class="text-xl md:text-2xl font-bold text-gray-900 mb-6">
             {% if client %}Edit Client: {{ client.case_name }}{% else %}Add New Client{% endif %}
         </h1>
 
         <form id="clientForm" method="POST"
               action="{% if client %}{{ url_for('clients.update_client', client_id=client.id) }}{% else %}{{ url_for('clients.create_client') }}{% endif %}">
 
-            <!-- Tabs -->
-            <div class="flex border-b border-gray-200 mb-6">
-                <button type="button" onclick="switchTab('profiles')" class="tab-btn active px-5 py-3 font-medium text-sm border-b-2 border-brand-600 text-brand-600" data-tab="profiles">Profiles</button>
-                <button type="button" onclick="switchTab('accounts')" class="tab-btn px-5 py-3 font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="accounts">Accounts</button>
-                <button type="button" onclick="switchTab('liabilities')" class="tab-btn px-5 py-3 font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="liabilities">Liabilities</button>
-                <button type="button" onclick="switchTab('financials')" class="tab-btn px-5 py-3 font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="financials">Financials</button>
+            <!-- Tabs (scrollable on mobile) -->
+            <div class="tab-scroll flex border-b border-gray-200 mb-6 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+                <button type="button" onclick="switchTab('profiles')" class="tab-btn active px-4 md:px-5 py-3 font-medium text-sm whitespace-nowrap border-b-2 border-brand-600 text-brand-600" data-tab="profiles">Profiles</button>
+                <button type="button" onclick="switchTab('accounts')" class="tab-btn px-4 md:px-5 py-3 font-medium text-sm text-gray-500 hover:text-gray-700 whitespace-nowrap" data-tab="accounts">Accounts</button>
+                <button type="button" onclick="switchTab('liabilities')" class="tab-btn px-4 md:px-5 py-3 font-medium text-sm text-gray-500 hover:text-gray-700 whitespace-nowrap" data-tab="liabilities">Liabilities</button>
+                <button type="button" onclick="switchTab('financials')" class="tab-btn px-4 md:px-5 py-3 font-medium text-sm text-gray-500 hover:text-gray-700 whitespace-nowrap" data-tab="financials">Financials</button>
             </div>
 
             <!-- Tab: Profiles -->
             <div id="tab-profiles" class="tab-content">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 mb-4">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Basic Info</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -52,9 +52,9 @@
                 </div>
 
                 <!-- Primary Profile -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 mb-4">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Client 1 (Primary)</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                             <input type="text" name="primary_name"
@@ -83,9 +83,9 @@
                 </div>
 
                 <!-- Spouse Profile -->
-                <div id="spouseSection" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-4 hidden">
+                <div id="spouseSection" class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6 mb-4 hidden">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Client 2 (Spouse)</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                             <input type="text" name="spouse_name"
@@ -116,7 +116,7 @@
 
             <!-- Tab: Accounts -->
             <div id="tab-accounts" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Accounts</h2>
                         <button type="button" onclick="addAccountRow()"
@@ -124,13 +124,13 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
-                            Add Account
+                            Add
                         </button>
                     </div>
                     <div id="accountsContainer" class="space-y-3">
                         {% if client and active_accounts %}
                         {% for account in active_accounts %}
-                        <div class="account-row grid grid-cols-6 gap-3 items-end p-3 bg-gray-50 rounded-lg">
+                        <div class="account-row grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 items-end p-3 bg-gray-50 rounded-lg">
                             <input type="hidden" name="accounts[{{ loop.index0 }}][id]" value="{{ account.id }}">
                             <div>
                                 <label class="block text-xs font-medium text-gray-500 mb-1">Owner</label>
@@ -188,7 +188,7 @@
 
             <!-- Tab: Liabilities -->
             <div id="tab-liabilities" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-semibold text-gray-900">Liabilities</h2>
                         <button type="button" onclick="addLiabilityRow()"
@@ -196,13 +196,13 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
-                            Add Liability
+                            Add
                         </button>
                     </div>
                     <div id="liabilitiesContainer" class="space-y-3">
                         {% if client and active_liabilities %}
                         {% for liab in active_liabilities %}
-                        <div class="liability-row grid grid-cols-5 gap-3 items-end p-3 bg-gray-50 rounded-lg">
+                        <div class="liability-row grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 items-end p-3 bg-gray-50 rounded-lg">
                             <input type="hidden" name="liabilities[{{ loop.index0 }}][id]" value="{{ liab.id }}">
                             <div>
                                 <label class="block text-xs font-medium text-gray-500 mb-1">Type</label>
@@ -250,9 +250,9 @@
 
             <!-- Tab: Financials -->
             <div id="tab-financials" class="tab-content hidden">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 md:p-6">
                     <h2 class="text-lg font-semibold text-gray-900 mb-4">Financial Summary</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Monthly Expense Budget</label>
                             <input type="number" name="monthly_expense_budget" step="0.01" min="0"
@@ -276,9 +276,9 @@
             </div>
 
             <!-- Submit -->
-            <div class="flex items-center justify-end gap-3 mt-6">
-                <a href="{{ url_for('clients.client_list') }}" class="px-5 py-2.5 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition font-medium">Cancel</a>
-                <button type="submit" class="px-5 py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition font-medium shadow">
+            <div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 mt-6">
+                <a href="{{ url_for('clients.client_list') }}" class="w-full sm:w-auto text-center px-5 py-2.5 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition font-medium">Cancel</a>
+                <button type="submit" class="w-full sm:w-auto px-5 py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition font-medium shadow">
                     {% if client %}Update Client{% else %}Create Client{% endif %}
                 </button>
             </div>
@@ -316,7 +316,6 @@ function toggleSpouse() {
 
     section.classList.toggle('hidden', !isMarried);
 
-    // Update all owner dropdowns
     document.querySelectorAll('.owner-select').forEach(sel => {
         const client2Opt = sel.querySelector('option[value="client2"]');
         const jointOpt = sel.querySelector('option[value="joint"]');
@@ -324,7 +323,6 @@ function toggleSpouse() {
         if (client2Opt) client2Opt.style.display = isMarried ? '' : 'none';
         if (jointOpt) jointOpt.style.display = isMarried ? '' : 'none';
 
-        // Reset if selected value is now hidden
         if (!isMarried && (sel.value === 'client2' || sel.value === 'joint')) {
             sel.value = 'client1';
         }
@@ -338,7 +336,7 @@ function addAccountRow() {
     if (noMsg) noMsg.remove();
 
     const html = `
-        <div class="account-row grid grid-cols-6 gap-3 items-end p-3 bg-gray-50 rounded-lg">
+        <div class="account-row grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 items-end p-3 bg-gray-50 rounded-lg">
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1">Owner</label>
                 <select name="accounts[${accountIdx}][owner]" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg owner-select">
@@ -384,7 +382,7 @@ function addLiabilityRow() {
     if (noMsg) noMsg.remove();
 
     const html = `
-        <div class="liability-row grid grid-cols-5 gap-3 items-end p-3 bg-gray-50 rounded-lg">
+        <div class="liability-row grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 items-end p-3 bg-gray-50 rounded-lg">
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1">Type</label>
                 <select name="liabilities[${liabilityIdx}][liability_type]" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg">
@@ -427,7 +425,6 @@ function removeRow(btn) {
     btn.closest('.account-row, .liability-row').remove();
 }
 
-// Init spouse visibility on load
 document.addEventListener('DOMContentLoaded', function() {
     toggleSpouse();
 });
