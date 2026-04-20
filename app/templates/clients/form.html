@@ -16,6 +16,7 @@
 
         <form id="clientForm" method="POST"
               action="{% if client %}{{ url_for('clients.update_client', client_id=client.id) }}{% else %}{{ url_for('clients.create_client') }}{% endif %}">
+            <input type="hidden" name="active_tab" id="activeTab" value="profiles">
 
             <!-- Tabs (scrollable on mobile) -->
             <div class="tab-scroll flex border-b border-gray-200 mb-6 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
@@ -307,6 +308,7 @@ function switchTab(tab) {
     const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
     activeBtn.classList.add('border-brand-600', 'text-brand-600', 'border-b-2');
     activeBtn.classList.remove('text-gray-500');
+    document.getElementById('activeTab').value = tab;
 }
 
 function toggleSpouse() {
@@ -427,6 +429,9 @@ function removeRow(btn) {
 
 document.addEventListener('DOMContentLoaded', function() {
     toggleSpouse();
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab) switchTab(tab);
 });
 </script>
 {% endblock %}

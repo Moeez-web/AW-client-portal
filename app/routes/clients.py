@@ -104,7 +104,8 @@ def create_client():
 
         db.session.commit()
         flash("Client created successfully.", "success")
-        return redirect(url_for("clients.edit_client", client_id=client.id))
+        tab = request.form.get("active_tab", "profiles")
+        return redirect(url_for("clients.edit_client", client_id=client.id, tab=tab))
 
     except Exception as e:
         db.session.rollback()
@@ -247,12 +248,14 @@ def update_client(client_id):
 
         db.session.commit()
         flash("Client updated successfully.", "success")
-        return redirect(url_for("clients.edit_client", client_id=client_id))
+        tab = request.form.get("active_tab", "profiles")
+        return redirect(url_for("clients.edit_client", client_id=client_id, tab=tab))
 
     except Exception as e:
         db.session.rollback()
         flash(f"Error updating client: {str(e)}", "error")
-        return redirect(url_for("clients.edit_client", client_id=client_id))
+        tab = request.form.get("active_tab", "profiles")
+        return redirect(url_for("clients.edit_client", client_id=client_id, tab=tab))
 
 
 @clients_bp.route("/clients/<int:client_id>/delete", methods=["POST"])
