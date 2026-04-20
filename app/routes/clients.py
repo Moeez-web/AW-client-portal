@@ -104,7 +104,7 @@ def create_client():
 
         db.session.commit()
         flash("Client created successfully.", "success")
-        return redirect(url_for("clients.client_list"))
+        return redirect(url_for("clients.edit_client", client_id=client.id))
 
     except Exception as e:
         db.session.rollback()
@@ -247,7 +247,7 @@ def update_client(client_id):
 
         db.session.commit()
         flash("Client updated successfully.", "success")
-        return redirect(url_for("clients.client_list"))
+        return redirect(url_for("clients.edit_client", client_id=client_id))
 
     except Exception as e:
         db.session.rollback()
