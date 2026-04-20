@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file
 from app import db
 from app.models import Client, Report, ReportEntry, Account
@@ -95,7 +95,7 @@ def new_report(client_id):
 def create_report(client_id):
     client = Client.query.get_or_404(client_id)
     try:
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         quarter = (now.month - 1) // 3 + 1
 
         report = Report(

@@ -1,6 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app import db
 from app.enums import LiabilityType
+
+
+def _utcnow():
+    return datetime.now(timezone.utc)
 
 
 class Liability(db.Model):
@@ -14,4 +18,4 @@ class Liability(db.Model):
     description = db.Column(db.String(255), nullable=True)
     is_active = db.Column(db.Boolean, default=True)
     is_deleted = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=_utcnow)

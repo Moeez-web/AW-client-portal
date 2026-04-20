@@ -1,6 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app import db
 from app.enums import AccountType, SubType, Owner
+
+
+def _utcnow():
+    return datetime.now(timezone.utc)
 
 
 class Account(db.Model):
@@ -15,4 +19,4 @@ class Account(db.Model):
     institution_name = db.Column(db.String(150), nullable=True)
     is_active = db.Column(db.Boolean, default=True)
     is_deleted = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=_utcnow)

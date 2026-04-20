@@ -12,10 +12,12 @@ def create_app():
         static_folder="static",
     )
 
-    base_dir = os.path.abspath(os.path.dirname(__file__))
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-        base_dir, "..", "db", "portal.db"
-    )
+    # Railway provides a persistent volume path, or fallback to local
+    data_dir = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH", os.path.join(os.path.dirname(os.path.dirname(__file__)), "db"))
+    os.makedirs(data_dir, exist_ok=True)
+
+    db_path = os.path.join(data_dir, "portal.db")
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-key-change-in-prod")
 
